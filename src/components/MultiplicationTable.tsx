@@ -117,7 +117,7 @@ const MultiplicationTable: React.FC<MultiplicationTableProps> = ({
                 </th>
               </tr>
             </thead>
-            <tbody className="relative">
+            <tbody className="relative text-white">
               {steps.map((step, index) => (
                 <TableRow
                   key={index}
