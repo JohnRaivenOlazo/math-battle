@@ -1,5 +1,5 @@
 
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
 import Character from './Character';
 import MultiplicationTable from './MultiplicationTable';
 import BattleFeedback from './BattleFeedback';
@@ -66,12 +66,29 @@ const BattleArena: React.FC<BattleArenaProps> = ({
   const [player, setPlayer] = useState<CharacterType>(playerCharacter);
   const [opponent, setOpponent] = useState<CharacterType>(opponentCharacter);
   
+  // Generate a new problem
+  const generateNewProblem = useCallback(() => {
+    const [a, b] = generateNumbers(difficulty);
+    setNumbers([a, b]);
+    
+    const { steps: newSteps } = calculateRussianPeasant(a, b);
+    setSteps(newSteps);
+    
+    setSelectedIndices([]);
+    setTimeBonus(10);
+    setTimerActive(true);
+    updateGameState('playing');
+    
+    // Add battle log entry
+    addToBattleLog(`New challenge: ${a} × ${b}`);
+  }, [difficulty, updateGameState]);
+  
   // Generate a new problem when the component mounts or when the round changes
   useEffect(() => {
     if (gameState === 'intro' || gameState === 'playing') {
       generateNewProblem();
     }
-  }, [difficulty, gameState === 'playing']);
+  }, [difficulty, gameState, generateNewProblem]);
   
   // Timer for time bonus
   useEffect(() => {
@@ -86,24 +103,8 @@ const BattleArena: React.FC<BattleArenaProps> = ({
     return () => {
       if (timer) clearInterval(timer);
     };
-  }, [timerActive, gameState]);
-  
-  // Generate a new problem
-  const generateNewProblem = () => {
-    const [a, b] = generateNumbers(difficulty);
-    setNumbers([a, b]);
-    
-    const { steps: newSteps } = calculateRussianPeasant(a, b);
-    setSteps(newSteps);
-    
-    setSelectedIndices([]);
-    setTimeBonus(10);
-    setTimerActive(true);
-    updateGameState('playing');
-    
-    // Add battle log entry
-    addToBattleLog(`New challenge: ${a} × ${b}`);
-  };
+  }, [timerActive, gameState, timeBonus]);
+
   
   // Add to battle log
   const addToBattleLog = (text: string) => {
@@ -137,7 +138,7 @@ const BattleArena: React.FC<BattleArenaProps> = ({
     setTimeout(() => {
       if (isCorrect) {
         // Calculate damage and update score
-        const { damage, isCritical, bonusDamage } = calculateDamage(numbers[0], numbers[1], timeBonus);
+        const { damage, isCritical } = calculateDamage(numbers[0], numbers[1], timeBonus);
         const { score, multiplier } = calculateScore(damage, timeBonus, currentStreak, isCritical);
         
         // Build feedback message
