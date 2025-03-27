@@ -1,7 +1,7 @@
 
 import React, { useEffect, useState, useRef } from 'react';
 import { gsap } from 'gsap';
-import { Sparkles, Zap, Star, Shield, CirclesFour, Sword } from 'lucide-react';
+import { Star, Shield, Sword } from 'lucide-react';
 
 interface LoaderProps {
   onComplete: () => void;

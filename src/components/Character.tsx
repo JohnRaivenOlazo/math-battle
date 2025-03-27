@@ -1,5 +1,5 @@
 
-import React, { useRef, useEffect } from 'react';
+import React, { useRef } from 'react';
 import { Character as CharacterType } from '../utils/gameLogic';
 
 interface CharacterProps {

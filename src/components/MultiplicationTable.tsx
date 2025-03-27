@@ -159,7 +159,7 @@ const MultiplicationTable: React.FC<MultiplicationTableProps> = ({
                 className="data-[state=checked]:bg-game-accent data-[state=checked]:text-white border-game-accent"
               />
               <label htmlFor="auto-select" className="text-sm cursor-pointer text-white/80 hover:text-white transition-colors">
-                Materia Assist
+                Hint
               </label>
             </div>
           )}
