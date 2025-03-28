@@ -27,8 +27,6 @@ interface BattleArenaProps {
   playerCharacter: CharacterType;
   opponentCharacter: CharacterType;
   difficulty: "easy" | "medium" | "hard";
-  updateScore: (points: number) => void;
-  updateStreak: (increasedStreak: number) => void;
   updateGameState: (state: GameState) => void;
   gameState: GameState;
   onRoundComplete: () => void;
@@ -38,8 +36,6 @@ const BattleArena: React.FC<BattleArenaProps> = ({
   playerCharacter,
   opponentCharacter,
   difficulty,
-  updateScore,
-  updateStreak,
   updateGameState,
   gameState,
   onRoundComplete,
@@ -65,6 +61,9 @@ const BattleArena: React.FC<BattleArenaProps> = ({
     text: string;
     type: "info" | "success" | "error" | "critical" | "special";
   } | null>(null);
+  const [round, setRound] = useState(1);
+  const [score, setScore] = useState(0);
+  const [streak, setStreak] = useState(0);
 
   // Player and opponent state
   const [player, setPlayer] = useState<CharacterType>(playerCharacter);
@@ -166,10 +165,9 @@ const BattleArena: React.FC<BattleArenaProps> = ({
         // Update streak
         const newStreak = currentStreak + 1;
         setCurrentStreak(newStreak);
-        updateStreak(newStreak);
 
         // Update score
-        updateScore(score);
+        setScore((prev) => prev + score);
 
         // Update game state
         updateGameState("correct");
@@ -231,6 +229,7 @@ const BattleArena: React.FC<BattleArenaProps> = ({
             } else {
               // Next round
               setTimeout(() => {
+                setRound((prev) => prev + 1);
                 onRoundComplete();
               }, 1500);
             }
@@ -248,7 +247,7 @@ const BattleArena: React.FC<BattleArenaProps> = ({
 
         // Reset streak
         setCurrentStreak(0);
-        updateStreak(0);
+        setStreak(0);
 
         // Update game state
         updateGameState("wrong");
@@ -312,6 +311,7 @@ const BattleArena: React.FC<BattleArenaProps> = ({
             } else {
               // Next round
               setTimeout(() => {
+                setRound((prev) => prev + 1);
                 onRoundComplete();
               }, 1500);
             }
@@ -331,7 +331,9 @@ const BattleArena: React.FC<BattleArenaProps> = ({
     setPlayer(playerCharacter);
     setOpponent(opponentCharacter);
     setCurrentStreak(0);
-    updateStreak(0);
+    setStreak(0);
+    setScore(0);
+    setRound(1);
     updateGameState("intro");
   };
 
@@ -373,6 +375,23 @@ const BattleArena: React.FC<BattleArenaProps> = ({
                 />
               </div>
               <div className="text-center mb-6">
+                {/* Stats Display */}
+                <div className="flex justify-center gap-4 mb-4">
+                  <div className="bg-black/50 backdrop-blur-md rounded-lg px-4 py-2 border border-game-primary/30">
+                    <div className="text-sm text-game-primary font-semibold">Round</div>
+                    <div className="text-2xl text-white font-pixel">{round}</div>
+                  </div>
+                  <div className="bg-black/50 backdrop-blur-md rounded-lg px-4 py-2 border border-game-secondary/30">
+                    <div className="text-sm text-game-secondary font-semibold">Streak</div>
+                    <div className="text-2xl text-white font-pixel">{streak}</div>
+                  </div>
+                  <div className="bg-black/50 backdrop-blur-md rounded-lg px-4 py-2 border border-game-accent/30">
+                    <div className="text-sm text-game-accent font-semibold">Score</div>
+                    <div className="text-2xl text-white font-pixel">{score}</div>
+                  </div>
+                </div>
+
+                {/* Multiplication Problem Display */}
                 <div className="text-2xl sm:text-3xl font-bold font-pixel mb-2">
                   <span className="text-game-primary">{numbers[0]}</span>
                   <span className="text-white mx-2">×</span>

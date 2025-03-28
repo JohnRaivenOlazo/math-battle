@@ -266,7 +266,7 @@ const Loader: React.FC<LoaderProps> = ({ onComplete }) => {
           <div className="absolute inset-0 rounded-xl border-2 border-dashed border-game-primary opacity-60 animate-rotate-slow"></div>
           
           {/* Glowing background */}
-          <div className="absolute inset-0 bg-black/70 backdrop-blur-sm rounded-xl overflow-hidden">
+          <div className="absolute inset-0 rounded-xl overflow-hidden">
             <div className="absolute inset-0 bg-gradient-to-br from-game-primary/20 via-transparent to-game-accent/20"></div>
             <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(139,92,246,0.15)_0%,transparent_70%)]"></div>
           </div>

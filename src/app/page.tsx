@@ -15,20 +15,14 @@ const Home = () => {
   // Game state
   const [gameState, setGameState] = useState<GameState>('intro');
   const [difficulty, setDifficulty] = useState<'easy' | 'medium' | 'hard'>('easy');
-  const [score, setScore] = useState(0);
-  const [streak, setStreak] = useState(0);
-  const [round, setRound] = useState(1);
   
   // Character state (simplified)
   const [playerCharacter, setPlayerCharacter] = useState(createCharacter('Peasant', difficulty));
   const [opponentCharacter, setOpponentCharacter] = useState(createCharacter('Enemy', difficulty));
   
-    // Reset game
+  // Reset game
   const resetGame = React.useCallback(() => {
     setGameState('intro');
-    setScore(0);
-    setStreak(0);
-    setRound(1);
     setPlayerCharacter(createCharacter('Peasant', difficulty));
     setOpponentCharacter(createCharacter('Enemy', difficulty));
   }, [difficulty]);
@@ -37,16 +31,6 @@ const Home = () => {
   useEffect(() => {
     resetGame();
   }, [difficulty, resetGame]);
-  
-  // Update score
-  const updateScore = (points: number) => {
-    setScore(prev => prev + points);
-  };
-  
-  // Update streak
-  const updateStreak = (newStreak: number) => {
-    setStreak(newStreak);
-  };
   
   // Handle difficulty change
   const handleDifficultyChange = (newDifficulty: 'easy' | 'medium' | 'hard') => {
@@ -60,7 +44,6 @@ const Home = () => {
   
   // Handle round completion
   const handleRoundComplete = () => {
-    setRound(prev => prev + 1);
     setGameState('playing');
   };
 
@@ -80,10 +63,7 @@ const Home = () => {
           {/* Game Header */}
           <div className="px-2 sm:px-4 max-w-7xl mx-auto">
             <GameHeader 
-              gameState={gameState} 
-              score={score} 
-              streak={streak} 
-              round={round} 
+              gameState={gameState}
             />
           </div>
           
@@ -154,8 +134,6 @@ const Home = () => {
               playerCharacter={playerCharacter}
               opponentCharacter={opponentCharacter}
               difficulty={difficulty}
-              updateScore={updateScore}
-              updateStreak={updateStreak}
               updateGameState={setGameState}
               gameState={gameState}
               onRoundComplete={handleRoundComplete}

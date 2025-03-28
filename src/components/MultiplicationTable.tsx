@@ -72,7 +72,7 @@ const MultiplicationTable: React.FC<MultiplicationTableProps> = ({
     <div className="space-y-4">
       <div 
         ref={tableRef}
-        className="overflow-hidden rounded-lg bg-black/60 backdrop-blur-md pixel-border-sm animate-scale-in max-h-[380px] overflow-y-auto relative"
+        className="overflow-hidden rounded-lg bg-black/60 backdrop-blur-md pixel-border-sm animate-scale-in max-h-[380px] relative"
       >
         {/* Decorative crystal elements */}
         <div className="absolute -top-3 -left-3 w-6 h-6 bg-game-primary transform rotate-45 opacity-80"></div>
@@ -101,17 +101,17 @@ const MultiplicationTable: React.FC<MultiplicationTableProps> = ({
         
         <div className="bg-gradient-to-b from-game-primary/20 to-transparent">
           <table className="w-full border-collapse">
-            <thead className="bg-gradient-to-r from-game-primary via-game-secondary to-game-primary text-white font-pixel sticky top-0 z-10">
+            <thead className="bg-gradient-to-r from-game-primary via-game-secondary to-game-primary text-white font-pixel z-10">
               <tr>
-                <th className="py-3 px-4 font-pixel text-xl relative">
+                <th className="pt-1 pb-0.5 font-pixel text-xl relative">
                   <span className="relative z-10 inline-block transform hover:scale-110 transition-transform">Halve</span>
                   <div className="absolute bottom-0 left-0 w-full h-1 bg-white/20"></div>
                 </th>
-                <th className="py-3 px-4 font-pixel text-xl relative">
+                <th className="pt-1 pb-0.5 font-pixel text-xl relative">
                   <span className="relative z-10 inline-block transform hover:scale-110 transition-transform">Double</span>
                   <div className="absolute bottom-0 left-0 w-full h-1 bg-white/20"></div>
                 </th>
-                <th className="py-3 px-4 font-pixel text-xl relative">
+                <th className="pt-1 pb-0.5 px-4 font-pixel text-xl relative">
                   <span className="relative z-10 inline-block transform hover:scale-110 transition-transform">Include?</span>
                   <div className="absolute bottom-0 left-0 w-full h-1 bg-white/20"></div>
                 </th>

@@ -1,15 +1,11 @@
-
 import React from 'react';
 import { GameState } from '../utils/gameLogic';
 
 interface GameHeaderProps {
   gameState: GameState;
-  score: number;
-  streak: number;
-  round: number;
 }
 
-const GameHeader: React.FC<GameHeaderProps> = ({ gameState, score, streak, round }) => {
+const GameHeader: React.FC<GameHeaderProps> = ({ gameState }) => {
   const renderInstructions = () => {
     switch (gameState) {
       case 'intro':
@@ -35,20 +31,6 @@ const GameHeader: React.FC<GameHeaderProps> = ({ gameState, score, streak, round
 
   return (
     <div className="w-full max-w-4xl mx-auto mb-4 text-center animate-fade-in">      
-      <div className="flex justify-between items-center px-4 py-2 bg-black/20 backdrop-blur-sm rounded mb-2">
-        <div className="flex items-center space-x-4">
-          <div className="text-xl text-white">
-            <span className="text-game-secondary">Round:</span> {round}
-          </div>
-          <div className="text-xl text-white">
-            <span className="text-game-secondary">Streak:</span> {streak}
-          </div>
-        </div>
-        <div className="text-2xl font-bold text-white">
-          <span className="text-game-secondary">Score:</span> {score}
-        </div>
-      </div>
-      
       <div className="bg-black/30 backdrop-blur-sm p-3 rounded text-white text-xl animate-pulse-subtle">
         {renderInstructions()}
       </div>
