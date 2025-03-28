@@ -306,14 +306,6 @@ const Loader: React.FC<LoaderProps> = ({ onComplete }) => {
             style={{ width: `${progress}%` }}
           ></div>
         </div>
-        
-        {/* Status text */}
-        <div className="mt-4 text-sm text-gray-400 font-pixel">
-          {progress < 30 ? "Initializing battle systems..." : 
-          progress < 60 ? "Calibrating mathematical powers..." : 
-          progress < 90 ? "Preparing Russian peasant algorithms..." :
-          "Ready for mathematical combat!"}
-        </div>
       </div>
       
       {/* Bottom decoration */}

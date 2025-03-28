@@ -98,21 +98,6 @@ const Home = () => {
                 <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-game-primary to-transparent"></div>
                 <div className="absolute bottom-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-game-accent to-transparent"></div>
                 
-                <p className="mb-6 text-lg sm:text-xl text-white/90">
-                  Master the ancient mathematics technique that dates back to medieval Russia.
-                </p>
-                
-                <div className="mb-8 text-base sm:text-lg">
-                  <h3 className="text-2xl sm:text-3xl font-bold mb-4 text-transparent bg-clip-text bg-gradient-to-r from-game-secondary to-game-accent">How to Play:</h3>
-                  <ol className="text-left list-decimal pl-6 space-y-3 text-white/80">
-                    <li>Each challenge presents a multiplication problem.</li>
-                    <li>The left column shows numbers being <span className="text-game-primary font-semibold">halved</span> (rounded down), and the right column shows numbers being <span className="text-game-secondary font-semibold">doubled</span>.</li>
-                    <li>Select <span className="text-game-accent font-semibold">ONLY</span> the rows where the left number is <span className="text-game-accent font-semibold">ODD</span>.</li>
-                    <li>The sum of your selected right column numbers should equal the multiplication result.</li>
-                    <li>Solve correctly to gain points and advance. Make a mistake, and you&apos;ll lose health!</li>
-                  </ol>
-                </div>
-                
                 <div className="mb-8">
                   <h3 className="text-2xl sm:text-3xl font-bold mb-4 text-transparent bg-clip-text bg-gradient-to-r from-game-primary to-game-secondary">Choose Difficulty:</h3>
                   <div className={`flex ${isMobile ? 'flex-col space-y-3' : 'justify-center space-x-6'}`}>
@@ -153,7 +138,7 @@ const Home = () => {
                   onClick={startGame}
                   className="w-full sm:w-auto px-8 py-4 bg-gradient-to-r from-game-primary via-game-secondary to-game-accent text-white font-bold text-lg rounded-lg shadow-[0_0_20px_rgba(139,92,246,0.4)] transition-all transform hover:scale-105 hover:shadow-[0_0_30px_rgba(139,92,246,0.6)]"
                 >
-                  <span className="relative z-10">Begin Challenge</span>
+                  <span className="relative z-10">Fight!</span>
                 </button>
               </div>
               

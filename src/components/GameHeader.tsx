@@ -34,11 +34,7 @@ const GameHeader: React.FC<GameHeaderProps> = ({ gameState, score, streak, round
   };
 
   return (
-    <div className="w-full max-w-4xl mx-auto mb-4 text-center animate-fade-in">
-      <h1 className="text-5xl font-bold mb-2 text-game-primary inline-block py-2 px-4">
-        <span className="text-game-text">Math Battle</span>
-      </h1>
-      
+    <div className="w-full max-w-4xl mx-auto mb-4 text-center animate-fade-in">      
       <div className="flex justify-between items-center px-4 py-2 bg-black/20 backdrop-blur-sm rounded mb-2">
         <div className="flex items-center space-x-4">
           <div className="text-xl text-white">

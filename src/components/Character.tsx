@@ -49,7 +49,7 @@ const Character: React.FC<CharacterProps> = ({
     >
       {/* Character Card */}
       <div className={`w-full sm:max-w-[200px] ${isPlayer ? 'bg-game-primary/10' : 'bg-game-secondary/10'} 
-        backdrop-blur-md rounded-xl p-3 sm:p-4 border border-white/10 
+        backdrop-blur-md rounded-xl pb-3 px-3 sm:pb-4 sm:px-4 border border-white/10 
         shadow-[0_0_15px_rgba(139,92,246,0.2)]
         ${victorious ? 'animate-glow' : ''}
         ${defeated ? 'opacity-50' : ''}`}>
