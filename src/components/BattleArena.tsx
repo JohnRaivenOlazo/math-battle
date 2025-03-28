@@ -349,98 +349,94 @@ const BattleArena: React.FC<BattleArenaProps> = ({
       )}
 
       <div className="mb-8">
-        <div className="flex flex-col gap-6 items-stretch">
+        <div className="flex flex-col gap-6">
           {/* Main battle area with glow effect */}
-          <div className="w-full relative bg-black/40 backdrop-blur-md rounded-xl p-4 sm:p-6 border border-game-primary/30 shadow-[0_0_20px_rgba(139,92,246,0.2)]">
+          <div className="w-full relative bg-black/40 backdrop-blur-md rounded-xl p-2 sm:p-6 border border-game-primary/30 shadow-[0_0_20px_rgba(139,92,246,0.2)]">
             <div className="absolute -z-10 inset-0 overflow-hidden blur-2xl opacity-10">
               <div className="absolute top-0 left-0 w-1/2 h-1/2 bg-game-primary rounded-full transform translate-x-1/4 translate-y-1/4"></div>
               <div className="absolute bottom-0 right-0 w-1/2 h-1/2 bg-game-secondary rounded-full transform -translate-x-1/4 -translate-y-1/4"></div>
             </div>
 
-            {/* Characters section */}
-            <div
-              className={`${
-                isMobile ? "flex gap-6" : "grid grid-cols-3 gap-6"
-              } mb-6`}
-            >
-              {/* Player Character */}
-              <div ref={playerRef} className="flex justify-center">
-                <Character
-                  character={player}
-                  isPlayer={true}
-                  isAttacking={isPlayerAttacking}
-                  isDamaged={isOpponentAttacking}
-                  victorious={gameState === "victory"}
-                  defeated={gameState === "defeat"}
-                />
+            {/* Characters and Stats section */}
+            <div className="flex flex-col gap-4">
+              {/* Stats Display */}
+              <div className="grid grid-cols-3 gap-2 sm:gap-4 px-2">
+                <div className="flex items-center justify-center gap-2 bg-black/50 backdrop-blur-md rounded-lg p-2 sm:px-4 sm:py-2 border border-game-primary/30">
+                  <div className="text-xs sm:text-sm text-game-primary font-semibold text-center">Round</div>
+                  <div className="text-lg sm:text-2xl text-white font-pixel text-center">{round}</div>
+                </div>
+                <div className="flex items-center justify-center gap-2 bg-black/50 backdrop-blur-md rounded-lg p-2 sm:px-4 sm:py-2 border border-game-secondary/30">
+                  <div className="text-xs sm:text-sm text-game-secondary font-semibold text-center">Streak</div>
+                  <div className="text-lg sm:text-2xl text-white font-pixel text-center">{streak}</div>
+                </div>
+                <div className="flex items-center justify-center gap-2 bg-black/50 backdrop-blur-md rounded-lg p-2 sm:px-4 sm:py-2 border border-game-accent/30">
+                  <div className="text-xs sm:text-sm text-game-accent font-semibold text-center">Score</div>
+                  <div className="text-lg sm:text-2xl text-white font-pixel text-center">{score}</div>
+                </div>
               </div>
-              <div className="text-center mb-6">
-                {/* Stats Display */}
-                <div className="flex justify-center gap-4 mb-4">
-                  <div className="bg-black/50 backdrop-blur-md rounded-lg px-4 py-2 border border-game-primary/30">
-                    <div className="text-sm text-game-primary font-semibold">Round</div>
-                    <div className="text-2xl text-white font-pixel">{round}</div>
-                  </div>
-                  <div className="bg-black/50 backdrop-blur-md rounded-lg px-4 py-2 border border-game-secondary/30">
-                    <div className="text-sm text-game-secondary font-semibold">Streak</div>
-                    <div className="text-2xl text-white font-pixel">{streak}</div>
-                  </div>
-                  <div className="bg-black/50 backdrop-blur-md rounded-lg px-4 py-2 border border-game-accent/30">
-                    <div className="text-sm text-game-accent font-semibold">Score</div>
-                    <div className="text-2xl text-white font-pixel">{score}</div>
-                  </div>
+
+              {/* Characters section */}
+              <div className={`${isMobile ? 'flex items-center justify-evenly' : 'grid grid-cols-3'} gap-2 sm:gap-6 items-center`}>
+                {/* Player Character */}
+                <div ref={playerRef} className="flex justify-center">
+                  <Character
+                    character={player}
+                    isPlayer={true}
+                    isAttacking={isPlayerAttacking}
+                    isDamaged={isOpponentAttacking}
+                    victorious={gameState === "victory"}
+                    defeated={gameState === "defeat"}
+                  />
                 </div>
 
-                {/* Multiplication Problem Display */}
-                <div className="text-2xl sm:text-3xl font-bold font-pixel mb-2">
-                  <span className="text-game-primary">{numbers[0]}</span>
-                  <span className="text-white mx-2">×</span>
-                  <span className="text-game-secondary">{numbers[1]}</span>
-                  <span className="text-white mx-2">=</span>
-                  <span className="text-game-accent">
-                    {numbers[0] * numbers[1]}
-                  </span>
+                {/* Battle Info */}
+                <div className={`text-center ${isMobile ? 'col-span-3' : 'col-span-1'}`}>
+                  {/* Multiplication Problem Display */}
+                  <div className="text-xl sm:text-3xl font-bold font-pixel mb-2">
+                    <span className="text-game-primary">{numbers[0]}</span>
+                    <span className="text-white mx-2">×</span>
+                    <span className="text-game-secondary">{numbers[1]}</span>
+                    <span className="text-white mx-2">=</span>
+                    <span className="text-game-accent">{numbers[0] * numbers[1]}</span>
+                  </div>
+
+                  {(gameState === "playing" || gameState === "checking") && (
+                    <div className="bg-black/30 backdrop-blur-sm rounded-lg p-2 mb-2 w-full max-w-xs mx-auto">
+                      <div className="font-bold text-sm sm:text-md mb-1 text-white/90">Time Bonus: {timeBonus}</div>
+                      <div className="w-full bg-gray-900 h-2 rounded-full overflow-hidden">
+                        <div
+                          className="h-full transition-all duration-1000"
+                          style={{
+                            width: `${(timeBonus / 10) * 100}%`,
+                            background: `linear-gradient(to right, #8B5CF6, #F97316)`,
+                          }}
+                        ></div>
+                      </div>
+                    </div>
+                  )}
                 </div>
 
-                {(gameState === "playing" || gameState === "checking") && (
-                  <div className="bg-black/30 backdrop-blur-sm rounded-lg p-2 mb-2 w-full max-w-xs mx-auto">
-                    <div className="font-bold text-md mb-1 text-white/90">
-                      Time Bonus: {timeBonus}
-                    </div>
-                    <div className="w-full bg-gray-900 h-2 rounded-full overflow-hidden">
-                      <div
-                        className="h-full transition-all duration-1000"
-                        style={{
-                          width: `${(timeBonus / 10) * 100}%`,
-                          background: `linear-gradient(to right, #8B5CF6, #F97316)`,
-                        }}
-                      ></div>
-                    </div>
-                  </div>
-                )}
-              </div>
-              {/* Opponent Character */}
-              <div ref={opponentRef} className="flex justify-center">
-                <Character
-                  character={opponent}
-                  isPlayer={false}
-                  isAttacking={isOpponentAttacking}
-                  isDamaged={isPlayerAttacking}
-                  victorious={gameState === "defeat"}
-                  defeated={gameState === "victory"}
-                />
+                {/* Opponent Character */}
+                <div ref={opponentRef} className="flex justify-center">
+                  <Character
+                    character={opponent}
+                    isPlayer={false}
+                    isAttacking={isOpponentAttacking}
+                    isDamaged={isPlayerAttacking}
+                    victorious={gameState === "defeat"}
+                    defeated={gameState === "victory"}
+                  />
+                </div>
               </div>
             </div>
 
             {/* Multiplication Table with improved visuals */}
-            <div className="overflow-x-auto mb-6 bg-black/30 backdrop-blur-sm rounded-lg p-2 sm:p-4 border border-white/10">
+            <div className="overflow-x-auto mt-4 mb-6 bg-black/30 backdrop-blur-sm rounded-lg p-2 sm:p-4 border border-white/10">
               <MultiplicationTable
                 steps={steps}
                 selectedIndices={selectedIndices}
                 isSelectable={gameState === "playing"}
-                isShowingAnswer={
-                  gameState === "correct" || gameState === "wrong"
-                }
+                isShowingAnswer={gameState === "correct" || gameState === "wrong"}
                 onSelectRow={handleRowSelect}
               />
             </div>
@@ -450,7 +446,7 @@ const BattleArena: React.FC<BattleArenaProps> = ({
               {gameState === "playing" && (
                 <button
                   onClick={() => handleSubmit()}
-                  className="px-8 py-3 bg-gradient-to-r from-game-primary to-game-secondary text-white font-bold rounded-lg transition-all transform hover:scale-105 shadow-[0_0_15px_rgba(139,92,246,0.3)] hover:shadow-[0_0_20px_rgba(139,92,246,0.5)]"
+                  className="px-6 sm:px-8 py-2 sm:py-3 bg-gradient-to-r from-game-primary to-game-secondary text-white font-bold rounded-lg transition-all transform hover:scale-105 shadow-[0_0_15px_rgba(139,92,246,0.3)] hover:shadow-[0_0_20px_rgba(139,92,246,0.5)]"
                 >
                   Attack
                 </button>
@@ -459,7 +455,7 @@ const BattleArena: React.FC<BattleArenaProps> = ({
               {(gameState === "victory" || gameState === "defeat") && (
                 <button
                   onClick={resetGame}
-                  className="px-8 py-3 bg-gradient-to-r from-game-accent to-orange-600 text-white font-bold rounded-lg transition-all transform hover:scale-105 shadow-[0_0_15px_rgba(249,115,22,0.3)] hover:shadow-[0_0_20px_rgba(249,115,22,0.5)]"
+                  className="px-6 sm:px-8 py-2 sm:py-3 bg-gradient-to-r from-game-accent to-orange-600 text-white font-bold rounded-lg transition-all transform hover:scale-105 shadow-[0_0_15px_rgba(249,115,22,0.3)] hover:shadow-[0_0_20px_rgba(249,115,22,0.5)]"
                 >
                   Play Again
                 </button>

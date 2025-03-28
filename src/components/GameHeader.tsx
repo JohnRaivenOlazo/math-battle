@@ -11,7 +11,7 @@ const GameHeader: React.FC<GameHeaderProps> = ({ gameState }) => {
       case 'intro':
         return "Prepare for the math duel! Choose rows with odd numbers in the left column.";
       case 'playing':
-        return "Select the rows where the left number is ODD. These are the ones that count!";
+        return "Select the rows where the left number is ODD.";
       case 'checking':
         return "Checking your answer...";
       case 'correct':
