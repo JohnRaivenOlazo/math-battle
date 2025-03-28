@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef, useCallback } from "react";
+import { Howl } from 'howler';
 import Character from "./Character";
 import MultiplicationTable from "./MultiplicationTable";
 import BattleFeedback from "./BattleFeedback";
@@ -41,6 +42,57 @@ const BattleArena: React.FC<BattleArenaProps> = ({
   onRoundComplete,
 }) => {
   const isMobile = useIsMobile();
+
+  const sounds = useRef<{
+    bgMusic?: Howl;
+    hit?: Howl;
+    gameover?: Howl;
+  }>({});
+
+  // Initialize Howler sounds
+  useEffect(() => {
+    // Background music
+    sounds.current.bgMusic = new Howl({
+      src: ['/bg-music.mp3'],
+      loop: true,
+      volume: 0.5,
+      preload: true,
+    });
+
+    // Hit sound
+    sounds.current.hit = new Howl({
+      src: ['/hit.mp3'],
+      volume: 0.6,
+      preload: true,
+    });
+
+    // Game over sound
+    sounds.current.gameover = new Howl({
+      src: ['/gameover.mp3'],
+      volume: 0.7,
+      preload: true,
+    });
+
+    // Store current sounds for cleanup
+    const currentSounds = sounds.current;
+
+    // Cleanup function
+    return () => {
+      if (currentSounds.bgMusic) {
+        currentSounds.bgMusic.stop();
+      }
+      Object.values(currentSounds).forEach(sound => {
+        if (sound) sound.unload();
+      });
+    };
+  }, []);
+
+  // Start background music when game starts
+  useEffect(() => {
+    if (gameState === "playing" && sounds.current.bgMusic && !sounds.current.bgMusic.playing()) {
+      sounds.current.bgMusic.play();
+    }
+  }, [gameState]);
 
   // References for animation targets
   const playerRef = useRef<HTMLDivElement>(null);
@@ -131,6 +183,11 @@ const BattleArena: React.FC<BattleArenaProps> = ({
 
     setTimeout(() => {
       if (isCorrect) {
+        // Play hit sound for successful attack
+        if (sounds.current.hit) {
+          sounds.current.hit.play();
+        }
+
         // Calculate damage and update score
         const { damage, isCritical } = calculateDamage(
           numbers[0],
@@ -181,9 +238,12 @@ const BattleArena: React.FC<BattleArenaProps> = ({
         // Play attack animation
         if (playerRef.current && opponentRef.current) {
           playAttackAnimation(playerRef.current, opponentRef.current, () => {
-            // Show damage number
+            // Show damage number and play hit sound again for impact
             if (opponentRef.current) {
               showDamageNumber(opponentRef.current, damage, false);
+              if (sounds.current.hit) {
+                sounds.current.hit.play();
+              }
             }
 
             // Update opponent health
@@ -262,12 +322,15 @@ const BattleArena: React.FC<BattleArenaProps> = ({
         // Update player health
         const newHealth = Math.max(0, player.currentHealth - actualDamage);
 
-        // Play attack animation
+        // Play attack animation for opponent
         if (opponentRef.current && playerRef.current) {
           playAttackAnimation(opponentRef.current, playerRef.current, () => {
-            // Show damage number
+            // Show damage number and play hit sound for opponent's attack
             if (playerRef.current) {
               showDamageNumber(playerRef.current, actualDamage);
+              if (sounds.current.hit) {
+                sounds.current.hit.play();
+              }
             }
 
             // Update player health
@@ -293,11 +356,11 @@ const BattleArena: React.FC<BattleArenaProps> = ({
 
             // Check if player is defeated
             if (newHealth <= 0) {
-              if (playerRef.current) {
-                playDefeatAnimation(playerRef.current);
+              if (sounds.current.bgMusic) {
+                sounds.current.bgMusic.stop();
               }
-              if (opponentRef.current) {
-                playVictoryAnimation(opponentRef.current);
+              if (sounds.current.gameover) {
+                sounds.current.gameover.play();
               }
 
               setFeedbackMessage({
@@ -328,6 +391,10 @@ const BattleArena: React.FC<BattleArenaProps> = ({
 
   // Reset game
   const resetGame = () => {
+    if (sounds.current.bgMusic && !sounds.current.bgMusic.playing()) {
+      sounds.current.bgMusic.play();
+    }
+
     setPlayer(playerCharacter);
     setOpponent(opponentCharacter);
     setCurrentStreak(0);
