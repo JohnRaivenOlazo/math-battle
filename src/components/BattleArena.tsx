@@ -59,6 +59,11 @@ const BattleArena: React.FC<BattleArenaProps> = ({
       preload: true,
     });
 
+    // Start playing background music immediately if game is not in defeat state
+    if (gameState !== "defeat" && sounds.current.bgMusic && !sounds.current.bgMusic.playing()) {
+      sounds.current.bgMusic.play();
+    }
+
     // Hit sound
     sounds.current.hit = new Howl({
       src: ['/hit.mp3'],
@@ -85,7 +90,7 @@ const BattleArena: React.FC<BattleArenaProps> = ({
         if (sound) sound.unload();
       });
     };
-  }, []);
+  }, [gameState]);
 
   // Start background music when game starts
   useEffect(() => {
