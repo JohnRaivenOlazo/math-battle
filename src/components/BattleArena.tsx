@@ -44,26 +44,12 @@ const BattleArena: React.FC<BattleArenaProps> = ({
   const isMobile = useIsMobile();
 
   const sounds = useRef<{
-    bgMusic?: Howl;
     hit?: Howl;
     gameover?: Howl;
   }>({});
 
   // Initialize Howler sounds
   useEffect(() => {
-    // Background music
-    sounds.current.bgMusic = new Howl({
-      src: ['/bg-music.mp3'],
-      loop: true,
-      volume: 0.5,
-      preload: true,
-    });
-
-    // Start playing background music immediately if game is not in defeat state
-    if (gameState !== "defeat" && sounds.current.bgMusic && !sounds.current.bgMusic.playing()) {
-      sounds.current.bgMusic.play();
-    }
-
     // Hit sound
     sounds.current.hit = new Howl({
       src: ['/hit.mp3'],
@@ -83,19 +69,16 @@ const BattleArena: React.FC<BattleArenaProps> = ({
 
     // Cleanup function
     return () => {
-      if (currentSounds.bgMusic) {
-        currentSounds.bgMusic.stop();
-      }
       Object.values(currentSounds).forEach(sound => {
         if (sound) sound.unload();
       });
     };
-  }, [gameState]);
+  }, []);
 
   // Start background music when game starts
   useEffect(() => {
-    if (gameState === "playing" && sounds.current.bgMusic && !sounds.current.bgMusic.playing()) {
-      sounds.current.bgMusic.play();
+    if (gameState === "playing" && sounds.current.hit && !sounds.current.hit.playing()) {
+      sounds.current.hit.play();
     }
   }, [gameState]);
 
@@ -361,9 +344,6 @@ const BattleArena: React.FC<BattleArenaProps> = ({
 
             // Check if player is defeated
             if (newHealth <= 0) {
-              if (sounds.current.bgMusic) {
-                sounds.current.bgMusic.stop();
-              }
               if (sounds.current.gameover) {
                 sounds.current.gameover.play();
               }
@@ -396,10 +376,6 @@ const BattleArena: React.FC<BattleArenaProps> = ({
 
   // Reset game
   const resetGame = () => {
-    if (sounds.current.bgMusic && !sounds.current.bgMusic.playing()) {
-      sounds.current.bgMusic.play();
-    }
-
     setPlayer(playerCharacter);
     setOpponent(opponentCharacter);
     setCurrentStreak(0);
